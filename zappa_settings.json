@@ -1,0 +1,12 @@
+{
+    "dev": {
+        "app_function": "app.app",
+        "aws_region": "us-east-1",
+        "keep_warm": false,
+        "log_level": "INFO",
+        "profile_name": "serverless",
+        "project_name": "tr-aws-vpc-flow",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-tr-aws-vpc-flow-s3"
+    }
+}

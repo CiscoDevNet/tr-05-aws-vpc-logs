@@ -1,0 +1,18 @@
+{
+  "name": "AWS VPC Flow Relay",
+  "jwt": {
+    "ACCESS_KEY": "AWS Access Key",
+    "SECRET_KEY": "AWS Secret Key",
+    "LOG_GROUP": "Group name",
+    "TIME_ZONE": "Pacific Standard Time",
+    "REGION": "us-east-1",
+    "LOOKBACK": 30, Integer in days
+    "LIMIT": 200, Integer or all
+    "SHOW_BLOCKS": true Show only allowed traffic
+  },
+  "region": {
+    "us": "86aad484-6344-42df-922d-916b9947ec47",
+    "eu": "a80c5f4a-74cc-4f4a-8934-571bee72acb5",
+    "apjc": "bab9277c-221f-49f9-a56e-b62641ae348a"
+  }
+}
