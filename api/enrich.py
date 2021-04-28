@@ -30,9 +30,9 @@ def set_target(ip, type, start, end):
         }
 
 
-def set_relation(src, dst, relation):
+def set_relation(origin, src, dst, relation):
     return {
-        "origin": "AWS VPC Flow Relay",
+        "origin": origin,
         "relation": relation,
         "source": {
             "value": src,
@@ -158,14 +158,15 @@ def observe_observables():
         for f in all_flows:
             try:
                 doc = set_flow_doc(f)
-                doc['relations'].append(set_relation(f['srcaddr'], f['dstaddr'], 'Connected_To'))
+                origin = "AWS VPC Flow Relay"
+                doc['relations'].append(set_relation(origin, f['srcaddr'], f['dstaddr'], 'Connected_To'))
                 doc['observables'].append(set_observable(o['value']))
                 doc['internal'] = vpc.check_local(f['dstaddr'])
                 if doc['internal']:
                     doc['targets'].append(set_target(f['dstaddr'], 'endpoint', f['starttime'], f['timestamp']))
                 if vpc.check_local(o['value']):
                     try:
-                        doc['relations'].append(set_relation(o['value'], natted, 'NAT_Translates_To'))
+                        doc['relations'].append(set_relation(origin, o['value'], natted, 'NAT_Translates_To'))
                         doc['targets'].append(set_target(natted,
                                                          'network.gateway',
                                                          f['starttime'],
@@ -175,7 +176,7 @@ def observe_observables():
                 else:
                     try:
 
-                        doc['relations'].append(set_relation(o['value'], nat, 'NAT_Translated_To'))
+                        doc['relations'].append(set_relation(origin, o['value'], nat, 'NAT_Translated_To'))
                         doc['targets'].append(set_target(nat,
                                                          'endpoint',
                                                          f['starttime'],

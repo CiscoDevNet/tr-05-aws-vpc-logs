@@ -1,7 +1,7 @@
 from functools import partial
 
 from flask import Blueprint, current_app
-from api.host_isolation import EC2
+from api.aws_ec2 import EC2
 
 from api.schemas import ObservableSchema, ActionFormParamsSchema
 from api.utils import get_json, get_jwt, jsonify_data

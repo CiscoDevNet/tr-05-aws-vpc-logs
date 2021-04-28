@@ -21,15 +21,32 @@ class EC2:
                                      region_name=self.REGION)
         self.resource = sess.resource('ec2')
 
+    def get_instances(self):
+        return self.client.describe_instances()
+
+    def get_subnets(self):
+        return self.client.describe_subnets()
+
+    def get_vpcs(self):
+        vpc = []
+        subnets = self.get_subnets()
+        for s in subnets['Subnets']:
+            if s['VpcId'] not in vpc:
+                vpc.append(s['VpcId'])
+        return vpc
+
+    def get_security_groups(self):
+        return self.client.describe_security_groups()
+
     def get_instance(self, ip):
-        instances = self.client.describe_instances()
+        instances = self.get_instances()
         for res in instances['Reservations']:
             for i in res['Instances']:
                 if i['PrivateIpAddress'] == ip:
                     return i
 
     def get_security_group(self, vpc):
-        groups = self.client.describe_security_groups()
+        groups = self.get_security_groups()
         for g in groups['SecurityGroups']:
             if g['GroupName'] == 'SecureX-EC2_Isolation-' + vpc:
                 return g
