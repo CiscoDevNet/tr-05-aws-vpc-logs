@@ -47,7 +47,11 @@ class VPC:
                 response = True
         return response
 
-    def get_flows(self):
+    def get_flows(self, delta=None):
+        if delta is None:
+            self.now_timestamp, self.end_timestamp = self.get_time_delta(self.LOOKBACK)
+        else:
+            self.now_timestamp, self.end_timestamp = self.get_time_delta(delta)
         my_config = Config(
             region_name=self.REGION,
             signature_version='v4',
@@ -146,8 +150,7 @@ class VPC:
         self.TIME_ZONE = login['TIME_ZONE']
         self.LOOKBACK = int(login['LOOKBACK'])
         self.SHOW_BLOCKS = login['SHOW_BLOCKS']
-        self.now_timestamp, self.end_timestamp = self.get_time_delta(self.LOOKBACK)
+        self.now_timestamp = None
+        self.end_timestamp = None
         self.get_subnets()
-        if lookup_flows:
-            self.get_flows()
 

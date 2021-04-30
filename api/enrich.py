@@ -135,6 +135,7 @@ def observe_observables():
     response = get_model()
     auth = get_jwt()
     vpc = vpc_logs.VPC(auth)
+    vpc.get_flows()
     ob = group_observables(get_observables())
     for o in ob:
         nat = None

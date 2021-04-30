@@ -2,18 +2,22 @@ import boto3
 from botocore.config import Config
 
 
-class EC2:
+class AWS:
     ip = None
     config = None
     client = None
     resource = None
 
-    def get_client(self):
-
-        return boto3.client('ec2',
+    def get_client(self, client):
+        return boto3.client(client,
                             aws_access_key_id=self.ACCESS_KEY,
                             aws_secret_access_key=self.SECRET_KEY,
                             config=self.config)
+
+    def get_s3_client(self):
+        return boto3.client('s3',
+                            aws_access_key_id=self.ACCESS_KEY,
+                            aws_secret_access_key=self.SECRET_KEY)
 
     def get_resource(self):
         sess = boto3.session.Session(aws_access_key_id=self.ACCESS_KEY,
@@ -133,5 +137,5 @@ class EC2:
                 'mode': 'standard'
             }
         )
-        self.client = self.get_client()
+        self.client = self.get_client('ec2')
         self.get_resource()

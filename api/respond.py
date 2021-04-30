@@ -1,7 +1,7 @@
 from functools import partial
 
 from flask import Blueprint, current_app
-from api.aws_ec2 import EC2
+from api.aws_ec2 import AWS
 
 from api.schemas import ObservableSchema, ActionFormParamsSchema
 from api.utils import get_json, get_jwt, jsonify_data
@@ -47,7 +47,7 @@ def get_un_isolate(observable):
 def respond_observables():
     ob = get_observables()
     auth = get_jwt()
-    ec2 = EC2(auth)
+    ec2 = AWS(auth)
     isolate = ec2.check_response(ob[0]['value'])
     if isolate is None:
         return jsonify_data([])
@@ -60,7 +60,7 @@ def respond_observables():
 @respond_api.route('/respond/trigger/', methods=['POST'])
 def respond_trigger():
     auth = get_jwt()
-    ec2 = EC2(auth)
+    ec2 = AWS(auth)
     req = get_action_form_params()
     action = req['action-id']
     if action == 'isolate-instance':
