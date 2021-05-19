@@ -122,6 +122,8 @@ class VPC:
                         'internal': False
                     }
                 if split[3] == ip:
+                    if len(src_targets) > self.FLOWS:
+                        continue
                     if split[4] not in src_counts.keys():
                         src_counts.update({split[4]: {'count': 1, 'starttime': flow['timestamp']}})
                     else:
@@ -131,6 +133,8 @@ class VPC:
                         src_targets.append(split[4])
                     src_counts[split[4]].update(flow)
                 elif split[4] == ip:
+                    if len(dst_targets) > self.FLOWS:
+                        continue
                     if split[3] not in dst_counts.keys():
                         dst_counts.update({split[3]: {'count': 1, 'starttime': flow['timestamp']}})
                     else:
@@ -150,6 +154,9 @@ class VPC:
         self.TIME_ZONE = login['TIME_ZONE']
         self.LOOKBACK = int(login['LOOKBACK'])
         self.SHOW_BLOCKS = login['SHOW_BLOCKS']
+        self.FLOWS = 50
+        if 'FLOWS' in login.keys():
+            self.FLOWS = login['FLOWS']
         self.now_timestamp = None
         self.end_timestamp = None
         self.get_subnets()

@@ -14,25 +14,29 @@ def sort_events(event):
     return datetime.timestamp(datetime.strptime(event['observed_time']['end_time'], "%Y-%m-%dT%H:%M:%S.%fZ"))
 
 
-def set_target(ip, type, start, end):
-    return {
-            "type": type,
-            "observables": [
-                {
-                    "value": ip,
-                    "type": "ip"
-                }
-            ],
-            "observed_time": {
-                "start_time": start.replace(' ', 'T') + '.000Z',
-                "end_time": end.replace(' ', 'T') + '.000Z'
-            }
+def set_target(ips, ob_type, start, end):
+    target = {
+        "type": ob_type,
+        "observables": [
+        ],
+        "observed_time": {
+            "start_time": start.replace(' ', 'T') + '.000Z',
+            "end_time": end.replace(' ', 'T') + '.000Z'
         }
+    }
+    for ip in ips:
+        target['observables'].append(
+            {
+                "value": ip,
+                "type": "ip"
+            }
+        )
+    return target
 
 
-def set_relation(origin, src, dst, relation):
+def set_relation(src, dst, relation):
     return {
-        "origin": origin,
+        "origin": "AWS VPC Flow Relay",
         "relation": relation,
         "source": {
             "value": src,
@@ -159,31 +163,42 @@ def observe_observables():
         for f in all_flows:
             try:
                 doc = set_flow_doc(f)
-                origin = "AWS VPC Flow Relay"
-                doc['relations'].append(set_relation(origin, f['srcaddr'], f['dstaddr'], 'Connected_To'))
                 doc['observables'].append(set_observable(o['value']))
                 doc['internal'] = vpc.check_local(f['dstaddr'])
-                if doc['internal']:
-                    doc['targets'].append(set_target(f['dstaddr'], 'endpoint', f['starttime'], f['timestamp']))
-                if vpc.check_local(o['value']):
+                if not doc['internal']:
+                    if not nat:
+                        try:
+                            f['srcaddr'] = vpc.ip_mapping[f['srcaddr']]
+                        except:
+                            pass
+                if not natted:
                     try:
-                        doc['relations'].append(set_relation(origin, o['value'], natted, 'NAT_Translates_To'))
-                        doc['targets'].append(set_target(natted,
-                                                         'network.gateway',
-                                                         f['starttime'],
-                                                         f['timestamp']))
+                        f['dstaddr'] = vpc.ip_mapping[f['dstaddr']]
                     except:
                         pass
+                if natted:
+                    if natted == f['srcaddr']:
+                        doc['relations'].append(set_relation(natted, f['dstaddr'], 'Connected_To'))
+                    if natted == f['dstaddr']:
+                        doc['relations'].append(set_relation(f['srcaddr'], natted, 'Connected_From'))
+                    doc['observables'].append(set_observable(natted))
+                    doc['relations'].append(set_relation(o['value'], natted, 'AWS EC2 Target'))
+                    doc['targets'].append(set_target([natted, o['value']],
+                                                     'endpoint',
+                                                     f['starttime'],
+                                                     f['timestamp']))
                 else:
-                    try:
-
-                        doc['relations'].append(set_relation(origin, o['value'], nat, 'NAT_Translated_To'))
-                        doc['targets'].append(set_target(nat,
+                    if nat == f['srcaddr'] or o['value'] == f['srcaddr']:
+                        doc['relations'].append(set_relation(o['value'], f['dstaddr'], 'Connected_To'))
+                    elif nat == f['dstaddr'] or o['value'] == f['dstaddr']:
+                        doc['relations'].append(set_relation(f['srcaddr'], o['value'], 'Connected_From'))
+                    if nat:
+                        doc['observables'].append(set_observable(nat))
+                        doc['relations'].append(set_relation(o['value'], nat, 'AWS EC2 Target'))
+                        doc['targets'].append(set_target([nat, o['value']],
                                                          'endpoint',
                                                          f['starttime'],
                                                          f['timestamp']))
-                    except:
-                        pass
                 response['sightings']['docs'].append(doc)
             except:
                 continue

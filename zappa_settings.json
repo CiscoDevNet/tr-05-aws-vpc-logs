@@ -7,6 +7,8 @@
         "profile_name": "serverless",
         "project_name": "tr-aws-vpc-flow",
         "runtime": "python3.7",
-        "s3_bucket": "zappa-tr-aws-vpc-flow-s3"
+        "s3_bucket": "zappa-tr-aws-vpc-flow-s3",
+        "memory_size": 1024,
+        "timeout_seconds": 60
     }
 }
