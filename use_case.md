@@ -16,14 +16,14 @@ This entire solution is built for SecureX and AWS:
 Please see the serverless relay module installation information [here](LINK NEEDED).
 
 ## White Paper
-Please continue your reading in this [white paper](https://www.cisco.com/c/en/us/products/collateral/security/white-paper-c11-744498.html).
+Please continue your reading in this [From Complex to Cohesive](https://www.cisco.com/c/en/us/products/collateral/security/white-paper-c11-744498.html) white paper.
 
 ## Related Sandbox
-Currently there is no DevNet sandbox yet, however you can find all options to try out SecureX [here](https://developer.cisco.com/learning/tracks/SecureX)! Also, anyone can create a SecureX account for free.
+Currently there is no DevNet sandbox yet, however you can find all options to try out the [SecureX sandbox](https://developer.cisco.com/learning/tracks/SecureX)! Also, anyone can create a SecureX account for free.
 
 ## List of SecureX Learning Labs
-* Please try out [this SecureX DevNet learning lab](https://developer.cisco.com/learning/modules/securex-serverless-relay-modules) to try this yourself. 
-* Please also check out the [SecureX microsite](https://developer.cisco.com/securex/) on DevNet!
+* Please try out this [SecureX DevNet learning lab](https://developer.cisco.com/learning/modules/securex-serverless-relay-modules) to try this yourself. 
+* Please also check out the [SecureX dev center](https://developer.cisco.com/securex/) on DevNet!
 
 ## Solutions on Ecosystem Exchange
 Please check out related solutions on [DevNet Ecosystem Exchange](https://developer.cisco.com/ecosystem/solutions/#key=securex).
