@@ -8,7 +8,9 @@
     "REGION": "us-east-1",
     "LOOKBACK": 30, Integer in days
     "LIMIT": 200, Integer or all
-    "SHOW_BLOCKS": true Show only allowed traffic
+    "SHOW_BLOCKS": true, Show only allowed traffic
+    "FLOWS": 50, Integer, number of each directional flows to include 50 src & 50 dst
+    "NETWORKS": ["10.0.0.0/24"] List of internal network strings, optional but expidites lookup times significantly
   },
   "region": {
     "us": "86aad484-6344-42df-922d-916b9947ec47",
