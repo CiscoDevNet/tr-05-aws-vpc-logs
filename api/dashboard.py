@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from api.schemas import DashboardTileSchema, DashboardTileDataSchema
 from api.utils import jsonify_data, get_jwt, get_json
 import api.utils
-from api.aws_ec2 import AWS
-from api.vpc_logs import VPC
+from api.aws_relay import AWS, VPC
+
 
 dashboard_api = Blueprint('dashboard', __name__)
 

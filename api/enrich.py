@@ -3,7 +3,7 @@ from flask import Blueprint, current_app
 from datetime import datetime
 from api.schemas import ObservableSchema
 from api.utils import get_json, get_jwt, jsonify_data
-import api.vpc_logs as vpc_logs
+from api.aws_relay import VPC
 
 enrich_api = Blueprint('enrich', __name__)
 
@@ -138,18 +138,19 @@ def deliberate_observables():
 def observe_observables():
     response = get_model()
     auth = get_jwt()
-    vpc = vpc_logs.VPC(auth)
+    vpc = VPC(auth)
     vpc.get_flows()
     ob = group_observables(get_observables())
     for o in ob:
         nat = None
-        if not vpc.check_local(o['value']):
+        local = vpc.check_local(o['value'])
+        if not local:
             try:
                 nat = vpc.ip_mapping[o['value']]
             except:
                 pass
         natted = None
-        if vpc.check_local(o['value']):
+        if local:
             try:
                 natted = vpc.ip_mapping[o['value']]
             except:

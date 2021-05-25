@@ -47,25 +47,31 @@ to restrict access to only a subset of resources as well if desired.
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "aws-vpc-flow-policy",
-            "Effect": "Allow",
-            "Action": [
-                "ec2:DescribeInstances",
-                "ec2:DeleteTags",
-                "ec2:DescribeTags",
-                "ec2:CreateTags",
-                "logs:DescribeLogStreams",
-                "logs:GetLogEvents",
-                "ec2:ModifyInstanceAttribute",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeSecurityGroups"
-            ],
-            "Resource": "*"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GenerateCredentialReport",
+        "ec2:DescribeInstances",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:CreateTags",
+        "logs:DescribeLogStreams",
+        "ec2:DescribeSecurityGroups",
+        "s3:ListAllMyBuckets",
+        "logs:GetLogEvents",
+        "iam:ListUsers",
+        "apigateway:GET",
+        "ec2:ModifyInstanceAttribute",
+        "ec2:DescribeSubnets",
+        "iam:GetCredentialReport",
+        "iam:ListAccessKeys"
+      ],
+      "Resource": "*"
+    }
+  ]
 }
 ```
 
@@ -283,7 +289,9 @@ you may consider the following sections as some placeholders.
     "REGION": "us-east-1",
     "LOOKBACK": 30, Integer in days
     "LIMIT": 200, Integer or all
-    "SHOW_BLOCKS": true Show only allowed traffic
+    "SHOW_BLOCKS": true, Show only allowed traffic
+    "FLOWS": 50, Integer, number of each directional flows to include 50 src & 50 dst      
+    "NETWORKS": ["10.0.0.0/24"] List of internal network strings, optional but expidites lookup times significantly        
   },
   "region": {
     "us": "86aad484-6344-42df-922d-916b9947ec47",
