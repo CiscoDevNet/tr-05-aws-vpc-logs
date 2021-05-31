@@ -16,7 +16,7 @@ This entire solution is built for SecureX and AWS:
 Please see the serverless relay module installation information [here](https://developer.cisco.com/codeexchange/github/repo/CiscoDevNet/tr-05-aws-vpc-logs).
 
 ## White Paper
-Please continue your reading in this [From Complex to Cohesive](https://www.cisco.com/c/en/us/products/collateral/security/white-paper-c11-744498.html) white paper.
+Please continue your reading in this [From Complex to Cohesive](https://www.cisco.com/c/en/us/products/collateral/security/white-paper-c11-744498.html) white paper. Also please read this [SecureX and Public CloudAmazon Web Services]( https://blogs.cisco.com/developer/securexaws01).
 
 ## Related Sandbox
 Currently there is no DevNet sandbox yet, however you can find all options to try out the [SecureX sandbox](https://developer.cisco.com/learning/tracks/SecureX)! Also, anyone can create a SecureX account for free.
