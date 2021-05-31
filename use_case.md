@@ -13,7 +13,7 @@ This entire solution is built for SecureX and AWS:
 * Ability to isolate EC2 instance from SecureX threat response response API and drop down menu (both internal and public IP address (NAT)).
 
 ## Related Code Exchange submission
-Please see the serverless relay module installation information [here](LINK NEEDED).
+Please see the serverless relay module installation information [here](https://developer.cisco.com/codeexchange/github/repo/CiscoDevNet/tr-05-aws-vpc-logs).
 
 ## White Paper
 Please continue your reading in this [From Complex to Cohesive](https://www.cisco.com/c/en/us/products/collateral/security/white-paper-c11-744498.html) white paper.
