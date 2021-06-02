@@ -47,31 +47,34 @@ to restrict access to only a subset of resources as well if desired.
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "VisualEditor0",
-      "Effect": "Allow",
-      "Action": [
-        "iam:GenerateCredentialReport",
-        "ec2:DescribeInstances",
-        "ec2:DeleteTags",
-        "ec2:DescribeTags",
-        "ec2:CreateTags",
-        "logs:DescribeLogStreams",
-        "ec2:DescribeSecurityGroups",
-        "s3:ListAllMyBuckets",
-        "logs:GetLogEvents",
-        "iam:ListUsers",
-        "apigateway:GET",
-        "ec2:ModifyInstanceAttribute",
-        "ec2:DescribeSubnets",
-        "iam:GetCredentialReport",
-        "iam:ListAccessKeys"
-      ],
-      "Resource": "*"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GenerateCredentialReport",
+                "ec2:DescribeInstances",
+                "ec2:DeleteTags",
+                "ec2:DescribeTags",
+                "ec2:CreateTags",
+                "logs:DescribeLogStreams",
+                "ec2:DescribeSecurityGroups",
+                "ec2:RevokeSecurityGroupIngress",
+                "s3:ListAllMyBuckets",
+                "ec2:CreateSecurityGroup",
+                "ec2:RevokeSecurityGroupEgress",
+                "logs:GetLogEvents",
+                "iam:ListUsers",
+                "ec2:ModifyInstanceAttribute",
+                "ec2:DescribeSubnets",
+                "apigateway:GET",
+                "iam:GetCredentialReport",
+                "iam:ListAccessKeys"
+            ],
+            "Resource": "*"
+        }
+    ]
 }
 ```
 
