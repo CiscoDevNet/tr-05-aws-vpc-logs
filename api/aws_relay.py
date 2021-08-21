@@ -141,7 +141,7 @@ class AWS:
             }
         )
         if 'NETWORKS' in login.keys():
-            self.internal_nets = login['NETWORKS']
+            self.internal_nets = login['NETWORKS'].split(',')
         else:
             self.internal_nets = None
         self.client = self.get_client('ec2')
@@ -196,6 +196,7 @@ class VPC:
         return response
 
     def get_flows(self, delta=None):
+        self.events = []
         if delta is None:
             self.now_timestamp, self.end_timestamp = self.get_time_delta(self.LOOKBACK)
         else:
@@ -233,18 +234,21 @@ class VPC:
                 endTime=self.now_timestamp,
             )['events']
 
-    def parse_events(self, ip):
+    def parse_events(self, ip, blocks=False):
         src_targets = []
         src_counts = {}
         dst_targets = []
         dst_counts = {}
+        total_events = 0
         for event in self.events:
+            if total_events >= self.LIMIT:
+                break
             split = event['message'].split(' ')
             if split[3] == '-' or split[4] == '-':
                 continue
             if split[3] == ip or split[4] == ip:
                 if split[12] == 'REJECT':
-                    if not self.SHOW_BLOCKS:
+                    if not blocks:
                         continue
                     action = 'blocked'
                 else:
@@ -270,7 +274,7 @@ class VPC:
                     'internal': False
                 }
                 if split[3] == ip:
-                    if len(src_targets) > self.FLOWS:
+                    if len(src_targets) > self.INGRESS_FLOWS:
                         continue
                     if split[4] not in src_counts.keys():
                         src_counts.update({split[4]: {'count': 1, 'starttime': flow['timestamp']}})
@@ -281,7 +285,7 @@ class VPC:
                         src_targets.append(split[4])
                     src_counts[split[4]].update(flow)
                 elif split[4] == ip:
-                    if len(dst_targets) > self.FLOWS:
+                    if len(dst_targets) > self.EGRESS_FLOWS:
                         continue
                     if split[3] not in dst_counts.keys():
                         dst_counts.update({split[3]: {'count': 1, 'starttime': flow['timestamp']}})
@@ -301,12 +305,18 @@ class VPC:
         self.LOG_GROUP = login['LOG_GROUP']
         self.TIME_ZONE = login['TIME_ZONE']
         self.LOOKBACK = int(login['LOOKBACK'])
-        self.SHOW_BLOCKS = login['SHOW_BLOCKS']
-        self.FLOWS = 50
-        if 'FLOWS' in login.keys():
-            self.FLOWS = login['FLOWS']
+        if 'LIMIT' in login.keys():
+            self.LIMIT = login['LIMIT']
+        else:
+            self.LIMIT = 2000
+        self.INGRESS_FLOWS = 1000
+        if 'INGRESS-FLOWS' in login.keys():
+            self.INGRESS_FLOWS = login['INGRESS-FLOWS']
+        self.EGRESS_FLOWS = 1000
+        if 'EGRESS-FLOWS' in login.keys():
+            self.FLOWS = login['EGRESS-FLOWS']
         if 'NETWORKS' in login.keys():
-            self.internal_nets = login['NETWORKS']
+            self.internal_nets = login['NETWORKS'].split(',')
         else:
             self.internal_nets = None
         self.now_timestamp = None

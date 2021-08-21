@@ -17,7 +17,7 @@ def get_flows(auth, delta):
     blocked_in = 0
     blocked_out = 0
     vpc = VPC(auth)
-    vpc.get_flows(None)
+    vpc.get_flows(delta)
     for event in vpc.events:
         split = event['message'].split(' ')
         if split[3] == '-' or split[4] == '-':
@@ -319,6 +319,17 @@ def get_tile_modules():
     return response
 
 
+def get_timeframe(req):
+    if req['period'] == 'last_7_days':
+        return 7
+    elif req['period'] == 'last_30_days':
+        return 30
+    elif req['period'] == 'last_90_days':
+        return 90
+    return 1
+
+
+
 @dashboard_api.route('/tiles', methods=['POST'])
 def tiles():
     try:
@@ -345,7 +356,7 @@ def tile_data():
     elif req_id == 'aws_ec2_details':
         return jsonify_data(get_ec2_details(auth))
     elif req_id == 'aws_vpc_flows':
-        data = get_flow_tile(auth, 1)
+        data = get_flow_tile(auth, get_timeframe(req))
         return jsonify_data(data)
     elif req_id == 'aws_iam_login':
         return jsonify_data(get_iam_user_tile(auth))

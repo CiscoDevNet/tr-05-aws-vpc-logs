@@ -1,3 +1,5 @@
+from jwt import PyJWKClient
+import jwt as pyjwt
 from authlib.jose import jwt
 from authlib.jose.errors import DecodeError, BadSignatureError
 from flask import request, current_app, jsonify
@@ -43,6 +45,7 @@ def get_jwt():
     }
     token = get_auth_token()
     try:
+        jwks_host = pyjwt.decode(token, options={'verify_signature': False})
         return jwt.decode(token, current_app.config['SECRET_KEY'])
     except tuple(expected_errors) as error:
         raise AuthorizationError(expected_errors[error.__class__])
@@ -98,7 +101,6 @@ icon_types = [
     'view-metadata',
     'umbrella',
     'block'
-
 ]
 
 key_types = [

@@ -1,10 +1,11 @@
+import os
 from __version__ import VERSION
 
 
 class Config:
     VERSION = VERSION
 
-    SECRET_KEY = 'INSERT - GENERATED JWT SECRET HERE'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
     CCT_OBSERVABLE_TYPES = {
         'ip': {}

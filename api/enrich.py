@@ -203,7 +203,7 @@ def observe_observables():
                 response['sightings']['docs'].append(doc)
             except:
                 continue
-    if auth['LIMIT'].lower() == 'all':
+    if str(auth['LIMIT']).lower() == 'all':
         return jsonify_data(response)
     else:
         updated_docs = sorted(response['sightings']['docs'], key=sort_events, reverse=True)

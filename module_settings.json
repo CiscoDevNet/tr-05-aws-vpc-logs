@@ -4,10 +4,10 @@
     "ACCESS_KEY": "AWS Access Key",
     "SECRET_KEY": "AWS Secret Key",
     "LOG_GROUP": "Group name",
-    "TIME_ZONE": "Pacific Standard Time",
+    "TIME_ZONE": "Pacific Standard Time", - use UTC
     "REGION": "us-east-1",
     "LOOKBACK": 30, Integer in days
-    "LIMIT": 200, Integer or all
+    "LIMIT": 200, Integer or all - remove and use flows
     "SHOW_BLOCKS": true, Show only allowed traffic
     "FLOWS": 50, Integer, number of each directional flows to include 50 src & 50 dst
     "NETWORKS": ["10.0.0.0/24"] List of internal network strings, optional but expidites lookup times significantly
