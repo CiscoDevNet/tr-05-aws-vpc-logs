@@ -30,7 +30,7 @@ def create_zappa_config(region, project, secret, memory, timeout):
     cfg = {
         "prod": {
             "app_function": "app.app",
-            "aws_region": "us-east-1",
+            "aws_region": region,
             "keep_warm": False,
             "log_level": "INFO",
             "profile_name": "serverless",
@@ -152,12 +152,15 @@ def check_operation(o):
 
 def deploy_zappa(op):
     if op == 'deploy':
-        result = subprocess.run(['zappa', 'deploy', 'prod'], stdout=subprocess.PIPE)
-        results = result.stdout.decode('utf-8').split('\n')
-        for r in results:
-            if 'complete!:' in r.lower():
-                print('App Deploy Complete')
-                return r.split('complete!:')[1].strip()
+        try:
+            result = subprocess.run(['zappa', 'deploy', 'prod'], stdout=subprocess.PIPE)
+            results = result.stdout.decode('utf-8').split('\n')
+            for r in results:
+                if 'complete!:' in r.lower():
+                    print('App Deploy Complete')
+                    return r.split('complete!:')[1].strip()
+        except:
+            op = 'update'
     if op == 'update':
         result = subprocess.run(['zappa', 'update', 'prod'], stdout=subprocess.PIPE)
         print('Updated Serverless App to AWS')
