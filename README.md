@@ -128,8 +128,8 @@ in SecureX leverages the included deploy_relay.py script.
  * Region: -r Example "us-east-1"
  * Project Name: -p Example "AWS_Test_Relay"
  * SecureX Region: -x must be US, EU, or APJC
- * AWS API Client ID: -i 
- * AWS API Client Secret: -s 
+ * SecureX API Client ID: -i 
+ * SecureX API Client Secret: -s 
  * Lambda Memory: -m Optional im MB, defaults to 4096
  * Lambda Timeout: -t Optional in seconds, defaults to 90 seconds
 
