@@ -178,6 +178,8 @@ def deploy_zappa(op):
 
 
 def main():
+    # Install Zappa 
+    zap = subprocess.run(['pip', 'install', 'zappa'], stdout=subprocess.PIPE)
     args = vars(parser.parse_args())
     op = check_operation(args['o'])
     encrypt_sec = generate_secret_key()
